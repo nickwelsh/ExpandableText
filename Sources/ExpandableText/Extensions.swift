@@ -79,8 +79,10 @@ public struct TextSet {
 
 func fontToUIFont(font: Font) -> UIFont {
     switch font {
+    #if !os(tvOS)
     case .largeTitle:
         return UIFont.preferredFont(forTextStyle: .largeTitle)
+    #endif
     case .title:
         return UIFont.preferredFont(forTextStyle: .title1)
     case .title2:
