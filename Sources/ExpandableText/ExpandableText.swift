@@ -91,6 +91,15 @@ public struct ExpandableText: View {
             
             if truncated {
                 if let collapseButton = collapseButton {
+                    #if os(tvOS)
+                    Button(action: {
+                        self.expand.toggle()
+                    }, label: {
+                        Text(expand == false ? expandButton.text : collapseButton.text)
+                            .font(expand == false ? expandButton.font : collapseButton.font)
+                            .foregroundColor(expand == false ? expandButton.color : collapseButton.color)
+                    }).focusable()
+                    #else
                     Button(action: {
                         self.expand.toggle()
                     }, label: {
@@ -98,8 +107,18 @@ public struct ExpandableText: View {
                             .font(expand == false ? expandButton.font : collapseButton.font)
                             .foregroundColor(expand == false ? expandButton.color : collapseButton.color)
                     })
+                    #endif
                 }
                 else if !expand {
+                    #if os(tvOS)
+                    Button(action: {
+                        self.expand = true
+                    }, label: {
+                        Text(expandButton.text)
+                            .font(expandButton.font)
+                            .foregroundColor(expandButton.color)
+                    }).focusable()
+                    #else
                     Button(action: {
                         self.expand = true
                     }, label: {
@@ -107,6 +126,7 @@ public struct ExpandableText: View {
                             .font(expandButton.font)
                             .foregroundColor(expandButton.color)
                     })
+                    #endif
                 }
             }
         }
