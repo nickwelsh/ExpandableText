@@ -52,6 +52,19 @@ extension ExpandableText {
 }
 
 extension String {
+    #if os(macOS)
+    func heightOfString(usingFont font: NSFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.height
+    }
+    
+    func widthOfString(usingFont font: NSFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.width
+    }
+    #else
     func heightOfString(usingFont font: UIFont) -> CGFloat {
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = self.size(withAttributes: fontAttributes)
@@ -63,6 +76,7 @@ extension String {
         let size = self.size(withAttributes: fontAttributes)
         return size.width
     }
+    #endif
 }
 
 public struct TextSet {
@@ -77,6 +91,38 @@ public struct TextSet {
     }
 }
 
+#if os(macOS)
+func fontToUIFont(font: Font) -> NSFont {
+    switch font {
+    #if !os(tvOS)
+    case .largeTitle:
+        return NSFont.preferredFont(forTextStyle: .largeTitle)
+    #endif
+    case .title:
+        return NSFont.preferredFont(forTextStyle: .title1)
+    case .title2:
+        return NSFont.preferredFont(forTextStyle: .title2)
+    case .title3:
+        return NSFont.preferredFont(forTextStyle: .title3)
+    case .headline:
+        return NSFont.preferredFont(forTextStyle: .headline)
+    case .subheadline:
+        return NSFont.preferredFont(forTextStyle: .subheadline)
+    case .callout:
+        return NSFont.preferredFont(forTextStyle: .callout)
+    case .caption:
+        return NSFont.preferredFont(forTextStyle: .caption1)
+    case .caption2:
+        return NSFont.preferredFont(forTextStyle: .caption2)
+    case .footnote:
+        return NSFont.preferredFont(forTextStyle: .footnote)
+    case .body:
+        return NSFont.preferredFont(forTextStyle: .body)
+    default:
+        return NSFont.preferredFont(forTextStyle: .body)
+    }
+}
+#else
 func fontToUIFont(font: Font) -> UIFont {
     switch font {
     #if !os(tvOS)
@@ -107,3 +153,4 @@ func fontToUIFont(font: Font) -> UIFont {
         return UIFont.preferredFont(forTextStyle: .body)
     }
 }
+#endif
