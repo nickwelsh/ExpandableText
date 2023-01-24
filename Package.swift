@@ -6,10 +6,9 @@ import PackageDescription
 let package = Package(
     name: "ExpandableText",
     platforms: [
-        .macOS(.v13),
         .iOS(.v15),
-        .tvOS(.v15)
-        
+        .tvOS(.v15),
+        .macOS(.v13_0),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
